@@ -32,11 +32,16 @@ const TodoTemplate = () => {
     },
   ];
 
+  // 하위 컴포넌트 todoInput 에게 todoText 를 받아오는 콜백 함수
+  const addTodo = todoText => {
+    console.log('할일 정보: ', todoText);
+  };
+
   return (
     <div className='TodoTemplate'>
       <TodoHeader />
       <TodoMain todoList={todos}/>
-      <TodoInput />
+      <TodoInput addTodo={addTodo} />
     </div>
   )
 }

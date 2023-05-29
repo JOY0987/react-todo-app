@@ -4,7 +4,7 @@ import cn from 'classnames';
 
 import './scss/TodoInput.scss';
 
-const TodoInput = () => {
+const TodoInput = ({ addTodo }) => {
 
   // 입력창이 열리는 여부를 표현하는 상태값
   const [open, setOpen] = useState(false);
@@ -20,9 +20,13 @@ const TodoInput = () => {
   // 서브밋 이벤트 핸들러
   const submitHandler = e => {
     e.preventDefault(); // 태그의 기본기능 제한
-    console.log('폼이 제출됨!!');
+    // console.log('폼이 제출됨!!');
+    // console.log(todoText);
 
-    console.log(todoText);
+    addTodo(todoText);
+
+    // 입력이 끝나면 입력창 비우기
+    setTodoText('');
   };
 
   // input change 이벤트 핸들러 함수
@@ -40,6 +44,8 @@ const TodoInput = () => {
                                 type='text'
                                 placeholder='할 일을 입력 후, 엔터를 누르세요!'
                                 onChange={todoChangeHandler}
+                                autoFocus
+                                value={todoText}
                             />
                         </form>
                       </div>);

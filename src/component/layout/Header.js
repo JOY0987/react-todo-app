@@ -2,6 +2,7 @@ import React from 'react'
 import {AppBar, Toolbar, Grid, 
   Typography, Button} from "@mui/material";
 import './Header.css';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   return (
@@ -24,8 +25,8 @@ const Header = () => {
 
                 <Grid item>
                   <div className='btn-group'>
-                    <a href='#'>로그인</a>
-                    <a href='#'>회원가입</a>
+                    <Link to='/login'>로그인</Link> 
+                    <Link to='/join'>회원가입</Link>
                   </div>
                 </Grid>
                

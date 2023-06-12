@@ -12,8 +12,7 @@ import {
 } from "@mui/material";
 
 // 리다이렉트 사용하기
-import { json, useNavigate } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
 import { API_BASE_URL as BASE, USER } from '../../config/host-config';
 
 const Join = () => {
@@ -21,7 +20,6 @@ const Join = () => {
   // 리다이렉트 사용하기
   const redirection = useNavigate();
 
-  // 포트 번호 바뀌여도 host-config 만 관리하면 됨!
   const API_BASE_URL = BASE + USER;
 
   // 상태변수로 회원가입 입력값 관리
@@ -102,6 +100,7 @@ const Join = () => {
       flag
     });
 
+
   };
 
   // 이메일 중복체크 서버 통신 함수
@@ -110,9 +109,8 @@ const Join = () => {
     const res = await fetch(`${API_BASE_URL}/check?email=${email}`);
 
     let msg = '', flag = false;
-
     if (res.status === 200) {
-      const res = await res.json(); // await: 바로바로 값을 받을 수 있음!
+      const json = await res.json();
       console.log(json);
       if (json) {
         msg = '이메일이 중복되었습니다!';
@@ -122,14 +120,13 @@ const Join = () => {
         flag = true;
       }
     } else {
-      // 맘대로 커스텀
       alert('서버 통신이 원활하지 않습니다!');
     }
 
-    setUserValue({ ...userValue, email: email})    
-    setMessage({ ...message, email: msg });
-    setCorrect({ ...correct, email: flag });
-
+    setUserValue({...userValue, email: email });
+    setMessage({...message, email: msg });
+    setCorrect({...correct, email: flag });
+      
   };
 
   // 이메일 입력창 체인지 이벤트 핸들러
@@ -157,8 +154,7 @@ const Join = () => {
       inputVal,
       msg,
       flag
-    })
-
+    });
 
   };
 
@@ -169,7 +165,7 @@ const Join = () => {
     document.getElementById('password-check').value = '';
     document.getElementById('check-span').textContent = '';
 
-    setMessage({...message, passwordCheck: ''}); // 화면을 다시 랜더링해야 메세지가 바뀐다,,,
+    setMessage({...message, passwordCheck: ''});
     setCorrect({...correct, passwordCheck: false});
 
     const inputVal = e.target.value;
@@ -199,7 +195,6 @@ const Join = () => {
   };
 
   // 비밀번호 확인란 검증 이벤트 핸들러
-  // 패스워드 란에서 change 이벤트가 발생하면 확인란의 입력값을 지워버려야한다.
   const pwCheckHandler = e => {
     // 검증 시작
     let msg, flag;
@@ -223,19 +218,21 @@ const Join = () => {
 
   };
 
+
+
   // 4개의 입력칸이 모두 검증에 통과했는지 여부를 검사
   const isValid = () => {
 
     for (const key in correct) {
-      const flag = correct[key]; // 반복해서 4가지의 flag 가 출력될것!
+      const flag = correct[key];
       if (!flag) return false;
     }
-
     return true;
   };
 
   // 회원가입 처리 서버 요청
-  const fetchSIgnUpPost = async () => {
+  const fetchSignUpPost = async () => {
+
     const res = await fetch(API_BASE_URL, {
       method: 'POST',
       headers: { 'content-type' : 'application/json' },
@@ -248,7 +245,7 @@ const Join = () => {
       // window.location.href = '/login';
       redirection('/login');
     } else {
-      alert('서버와의 통신이 원활하지 않습니다');
+      alert('서버와의 통신이 원활하지 않습니다.');
     }
   };
 
@@ -259,8 +256,8 @@ const Join = () => {
 
     // 회원가입 서버 요청
     if (isValid()) {
-      // fetchSignUpPost();
-      alert('회원가입 정보를 서버에 전송합니다.');
+      fetchSignUpPost();
+      // alert('회원가입 정보를 서버에 전송합니다.')
     } else {
       alert('입력란을 다시 확인해주세요!');
     }
@@ -316,7 +313,6 @@ const Join = () => {
                       ?{color:'green'}
                       : {color:'red'}
                     }>{message.email}</span>
-
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
@@ -351,7 +347,7 @@ const Join = () => {
                     />
                     <span id='check-span' style={
                       correct.passwordCheck
-                      ? {color:'green'}
+                      ?{color:'green'}
                       : {color:'red'}
                     }>{message.passwordCheck}</span>
                 </Grid>

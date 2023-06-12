@@ -32,8 +32,18 @@ const Login = () => {
       return;
     }
 
-    const json = await res.json(); // 서버에서 온 json 읽기
-    // alert(json.userName);
+    const { token, userName, email, role } = await res.json(); // 서버에서 온 json 읽기
+
+    // json 에 담긴 인증정보를 <클라이언트>에 보관시켜야함!
+    // 1. 로컬 스토리지 - 브라우저가 종료되어도 보관됨 
+        // (자동로그인 시 이용)
+    // 2. 세션 스토리지 - 브라우저가 종료되면 사라짐
+    
+    // 로컬 스토리지 방식
+    localStorage.setItem('ACCESS_TOKEN', token);
+    localStorage.setItem('LOGIN_USERNAME', userName);
+    localStorage.setItem('USER_ROLE', role);
+
 
     // 홈으로 리다이렉트
     redirection('/');
